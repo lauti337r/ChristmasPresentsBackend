@@ -2,86 +2,29 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ChristmasPresents.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace ChristmasPresents.Controllers
 {
-    public class MainController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    [EnableCors]
+    public class MainController : ControllerBase
     {
-        // GET: MainController
-        public ActionResult Index()
+        public MainController()
         {
-            return View();
         }
 
-        // GET: MainController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet("Authenticate")]
+        [Authorize]
+        public async Task<ActionResult<bool>> Authenticate()
         {
-            return View();
-        }
-
-        // GET: MainController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: MainController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: MainController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: MainController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: MainController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: MainController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return true;
         }
     }
 }

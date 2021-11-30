@@ -1,2 +1,5 @@
 /ChristmasPresents/obj/*
 /.vs/*
+ChristmasPresents/bin/Debug/net5.0/
+
+*.user
