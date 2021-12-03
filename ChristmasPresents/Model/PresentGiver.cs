@@ -13,6 +13,7 @@ namespace ChristmasPresents.Model
         public string ContactEmail { get; set; }
         public string Letter { get; set; }
         public string PaymentMethod { get; set; }
+        public byte? PaymentMade { get; set; }
 
         public virtual Present Present { get; set; }
     }

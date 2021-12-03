@@ -59,7 +59,12 @@ namespace ChristmasPresents.Model
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(120).HasColumnName("Name");
+                    .HasMaxLength(120)
+                    .HasColumnName("Name");
+
+                entity.Property(e => e.Number)
+                    .HasDefaultValueSql("'0'")
+                    .HasColumnName("Number");
 
                 entity.Property(e => e.PictureUrl).HasMaxLength(600).HasColumnName("PictureUrl");
             });
@@ -108,6 +113,10 @@ namespace ChristmasPresents.Model
                 entity.Property(e => e.ContactPhone).HasMaxLength(64);
 
                 entity.Property(e => e.PaymentMethod).HasMaxLength(45);
+
+                entity.Property(e => e.PaymentMade)
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'0'").HasColumnName("PaymentMade");
 
                 entity.Property(e => e.Name)
                     .IsRequired()

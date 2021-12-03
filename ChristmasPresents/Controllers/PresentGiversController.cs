@@ -44,6 +44,42 @@ namespace ChristmasPresents.Controllers
             return presentGiver;
         }
 
+        [HttpPut("setPayment/{id}")]
+        [Authorize]
+        public async Task<IActionResult> SetPayment(int id)
+        {
+            try
+            {
+                PresentGiver presentGiver = await _context.PresentGivers.FirstOrDefaultAsync(pg => pg.PresentGiverId == id);
+                presentGiver.PaymentMade = 1;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("unsetPayment/{id}")]
+        [Authorize]
+        public async Task<IActionResult> UnsetPayment(int id)
+        {
+            try
+            {
+                PresentGiver presentGiver = await _context.PresentGivers.FirstOrDefaultAsync(pg => pg.PresentGiverId == id);
+                presentGiver.PaymentMade = 0;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
+            return NoContent();
+        }
+
         // PUT: api/PresentGivers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

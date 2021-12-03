@@ -80,6 +80,42 @@ namespace ChristmasPresents.Controllers
             return NoContent();
         }
 
+        [HttpPut("Hide/{id}")]
+        [Authorize]
+        public async Task<IActionResult> HideKid(int id)
+        {
+            try
+            {
+                Kid kid = await _context.Kids.FirstOrDefaultAsync(k => k.KidId == id);
+                kid.Hidden = 1;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("Unhide/{id}")]
+        [Authorize]
+        public async Task<IActionResult> UnhideKid(int id)
+        {
+            try
+            {
+                Kid kid = await _context.Kids.FirstOrDefaultAsync(k => k.KidId == id);
+                kid.Hidden = 0;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
+            return NoContent();
+        }
+
         // POST: api/Kids
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
