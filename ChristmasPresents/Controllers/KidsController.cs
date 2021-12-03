@@ -26,9 +26,12 @@ namespace ChristmasPresents.Controllers
 
         // GET: api/Kids
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Kid>>> GetKids()
+        public async Task<ActionResult<IEnumerable<Kid>>> GetKids([FromQuery]bool showHidden = false)
         {
-            return await _context.Kids.Where(k => k.Hidden == 0).Include(k => k.Present).ToListAsync();
+            if (!showHidden) 
+                return await _context.Kids.Where(k => k.Hidden == 0).Include(k => k.Present).ToListAsync();
+            else
+                return await _context.Kids.Include(k => k.Present).Include(k => k.Present.PresentGiver).ToListAsync();
         }
 
         // GET: api/Kids/5
@@ -57,7 +60,7 @@ namespace ChristmasPresents.Controllers
             }
 
             _context.Entry(kid).State = EntityState.Modified;
-
+            _context.Entry(kid.Present).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
