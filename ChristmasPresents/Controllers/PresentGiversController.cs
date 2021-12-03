@@ -27,7 +27,7 @@ namespace ChristmasPresents.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PresentGiver>>> GetPresentGivers()
         {
-            return await _context.PresentGivers.ToListAsync();
+            return await _context.PresentGivers.Include(pg => pg.Present).Include(pg => pg.Present.Kid).ToListAsync();
         }
 
         // GET: api/PresentGivers/5
