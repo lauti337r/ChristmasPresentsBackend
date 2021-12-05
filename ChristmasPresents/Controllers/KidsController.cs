@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Cors;
 
 namespace ChristmasPresents.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors]
@@ -28,8 +29,12 @@ namespace ChristmasPresents.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Kid>>> GetKids([FromQuery]bool showHidden = false)
         {
-            if (!showHidden) 
-                return await _context.Kids.Where(k => k.Hidden == 0).Include(k => k.Present).ToListAsync();
+            if (!showHidden)
+            {
+                List<Kid> kidsList = await _context.Kids.Where(k => k.Hidden == 0).Include(k => k.Present).ToListAsync();
+                kidsList.ShuffleOperation();
+                return kidsList;
+            }
             else
                 return await _context.Kids.Include(k => k.Present).Include(k => k.Present.PresentGiver).ToListAsync();
         }
