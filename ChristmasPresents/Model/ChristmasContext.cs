@@ -89,7 +89,7 @@ namespace ChristmasPresents.Model
                     .IsRequired()
                     .HasMaxLength(64).HasColumnName("Name");
 
-                entity.Property(e => e.PresentGiverId).HasColumnType("int(10) unsigned").HasColumnName("PresentGiverId");
+                entity.Property(e => e.PresentGiverId).HasColumnType("int(10) unsigned").HasColumnName("PresentGiverId").HasDefaultValueSql(null);
 
                 entity.HasOne<Kid>(p => p.Kid)
                     .WithOne(k => k.Present)

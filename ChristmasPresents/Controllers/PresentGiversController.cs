@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using ChristmasPresents.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using Exception = System.Exception;
 
 namespace ChristmasPresents.Controllers
 {
@@ -17,10 +20,12 @@ namespace ChristmasPresents.Controllers
     public class PresentGiversController : ControllerBase
     {
         private readonly ChristmasContext _context;
+        private readonly EmailService _emailService;
 
-        public PresentGiversController(ChristmasContext context)
+        public PresentGiversController(ChristmasContext context, EmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
         // GET: api/PresentGivers
@@ -130,6 +135,23 @@ namespace ChristmasPresents.Controllers
             kid.Hidden = 1;
 
             await _context.SaveChangesAsync();
+
+            try
+            {
+                _emailService.SendEmail(presentGiver.Name, presentGiver.ContactPhone, presentGiver.ContactEmail,
+                    presentGiver.PaymentMethod == "MERCADOPAGO"
+                        ? "Mercado Pago"
+                        : (presentGiver.PaymentMethod == "EFECTIVO_TRANSFERENCIA"
+                            ? "Efectivo/Transferencia"
+                            : presentGiver.PaymentMethod), kid.Name, kid.Area, presentGiver.Letter,
+                    present.Cost.ToString(), present.ShopName);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
 
             return CreatedAtAction("GetPresentGiver", new { id = presentGiver.PresentGiverId }, presentGiver);
         }
