@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -123,6 +124,13 @@ namespace ChristmasPresents.Controllers
         public async Task<ActionResult<PresentGiver>> PostPresentGiver(int kidId, PresentGiver presentGiver)
         {
             var present = _context.Presents.Where(p => p.KidId == kidId).FirstOrDefault();
+
+            if (present.PresentGiverId.HasValue)
+            {
+                var error = new Dictionary<string, object>();
+                error["code"] = 415;
+                return BadRequest(error);
+            }
 
             _context.PresentGivers.Add(presentGiver);
 
