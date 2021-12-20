@@ -170,6 +170,21 @@ namespace ChristmasPresents.Controllers
         public async Task<IActionResult> DeletePresentGiver(int id)
         {
             var presentGiver = await _context.PresentGivers.FindAsync(id);
+
+            var present = await _context.Presents.FirstOrDefaultAsync(p => p.PresentGiverId == id);
+
+            if (present != null)
+            {
+                var kid = await _context.Kids.FirstOrDefaultAsync(k => k.KidId == present.KidId);
+                if (kid != null)
+                {
+                    kid.Hidden = 0;
+                }
+                present.PresentGiverId = null;
+                present.PresentGiver = null;
+                await _context.SaveChangesAsync();
+            }
+
             if (presentGiver == null)
             {
                 return NotFound();
